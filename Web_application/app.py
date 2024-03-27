@@ -3,27 +3,32 @@ import pickle
 import pathlib
 import textwrap
 import google.generativeai as genai
+import pandas as pd
 
 from IPython.display import display
 from IPython.display import Markdown
 
 
-genai.configure(api_key='AIzaSyAz3pBfQPp0ZHecfxJRDsSrjo33nfE2O20')
-model=genai.GenerativeModel('gemini-1.0-pro-latest')
-
-rndfrst=pickle.load(open('RNDFRST.pkl', 'rb'))
 
 
 # Write code to take input and frame the input from 7 fields to the input size.
 
 app=Flask(__name__)
 
+genai.configure(api_key='AIzaSyAz3pBfQPp0ZHecfxJRDsSrjo33nfE2O20')
+model=genai.GenerativeModel('gemini-1.0-pro-latest')
+
+rndfrst=pickle.load(open('RNDFRST.pkl', 'rb'))
+
+def to_markdown(text):
+        text = text.replace('•', '  *')
+        return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
+
+
+
 @app.route('/')
 def home():
     return render_template('index.html')
-
-
-
 
 
 @app.route('/form', methods=['POST']) #form page
@@ -34,19 +39,27 @@ def form():
 
 @app.route('/predict', methods=['POST']) #predict page (form->predict)
 
-def to_markdown(text):
-        text = text.replace('•', '  *')
-        return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
+
 
 def output():
-
-    #write code to take inputs from the form
-    #write code to encode those inputs 
-    #convert them to dataframe
-
-    #df this is dataframe created using input variables
     
-    crop=rndfrst.predict(df)
+
+    n=request.form['nitrogen']
+    p=request.form['phosphorus']
+    k=request.form['potassium']
+    h=request.form['humidity']
+    ph=request.form['pH']
+    r=request.form['rainfall']
+    s=request.form['state']
+
+    
+    #write code to encode those inputs (take the code from model building) 
+
+    #dataf this is dataframe created using input variables
+
+
+
+    crop=rndfrst.predict(dataf)
     
     
 
@@ -80,7 +93,7 @@ def feedback():
         else 
         display Thankyou for submitting the feedback
      """
-     
+
      if request.method=='GET':
             flag=0
             render_template('feedback.html', flag=flag)
