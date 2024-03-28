@@ -1,6 +1,28 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './Home.css'
 const Home = () => {
+    const modalRef = useRef(null);
+
+
+    // Function to show the modal after 2 seconds
+    function showModal() {
+        setTimeout(() => {
+            modalRef.current.classList.remove('hidden');
+        }, 2000); // Adjust the time in milliseconds (2000ms = 2 seconds)
+    }
+
+    // Call the showModal function on page load
+    window.addEventListener('load', showModal);
+    useEffect(() => {
+        window.addEventListener('load', showModal);
+        return () => {
+          window.removeEventListener('load', showModal);
+        };
+      }, []);
+      
+    const hideCookiesSection = ()=>{
+        modalRef.current.classList.add('hidden')
+    }
     return (
         <div className='home'>
             <section className='h-screen min-h-screen'>
@@ -81,6 +103,26 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+            <section ref={modalRef} className="fixed hidden max-w-md p-4 mx-auto bg-white border border-gray-200  left-12 bottom-16  rounded-2xl z-10">
+                <h2 className="font-semibold text-gray-800 ">🍪 We use cookies!</h2>
+
+                <p className="mt-4 text-sm text-gray-700 ">Hi, this website uses essential cookies to ensure its proper operation and tracking cookies to understand how you interact with it. The latter will be set only after consent. <a href="#" className="font-medium text-gray-700 underline transition-colors duration-300 dark:hover:text-blue-400 dark:text-white hover:text-blue-500">Let me choose</a>. </p>
+
+                <p className="mt-3 text-sm text-gray-700 ">Closing this modal default settings will be saved.</p>
+
+                <div className="grid grid-cols-2 gap-4 mt-4 shrink-0">
+                    <button className=" text-xs bg-gray-900 font-medium rounded-lg hover:bg-gray-700 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-none" 
+                    onClick={hideCookiesSection}>
+                        Accept all
+                    </button>
+                    <button className=" text-xs border text-gray-800 hover:bg-gray-100  font-medium rounded-lg px-4 py-2.5 duration-300 transition-colors focus:outline-none" 
+                    onClick={hideCookiesSection}>
+                        Close
+                    </button>
+                </div>
+            </section>
+
+
 
 
 
