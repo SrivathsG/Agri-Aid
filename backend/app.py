@@ -21,6 +21,7 @@ def get_data():
         rainfall = form_data['rainfall']
         state = form_data['state']
         response_data = {  # Example response data
+            'success': True,
             'message': 'Data received successfully!',
             "data":{
             'nitrogen_level': nitrogen_level,
@@ -41,3 +42,4 @@ def get_data():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
+
