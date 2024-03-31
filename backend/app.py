@@ -38,8 +38,16 @@ def get_data():
             }
             # Add other relevant data based on your processing
         }
-
-        return jsonify(response_data)  # Return JSON response
+        obj = main.Predict()
+        test_df = obj.transform(form_data)
+        pred = obj.predict(test_df)
+        res = {
+            "Success":True,
+            "Message" : f'We recommend you to grow {pred} based on the details mentioned'
+        }
+        time.sleep(0.5)
+        return jsonify(res)
+        # return jsonify(response_data)  # Return JSON response
     else:
         return jsonify({'error': 'Invalid request method'}), 405  # Handle non-POST requests
 
