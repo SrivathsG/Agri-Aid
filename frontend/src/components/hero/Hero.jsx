@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 // import './static/css2/nunito-font.css'
 import axios from 'axios'
 import "./Hero.css"
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 const Hero = () => {
     const backend_url = import.meta.env.VITE_BACKEND_URL
     const initialformdata = {
@@ -17,30 +19,64 @@ const Hero = () => {
         state: "State"
     }
     const [formData, setFormData] = useState(initialformdata)
+    const [loading, setLoading] = useState(false)
+    const [model_output, setModel_output] = useState(null)
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission behavior
         console.log(formData); // Log the entire formData object
-        try {
-            const response = await axios.post(`${backend_url}/get_data`, formData, {
-                headers: { 'Content-Type': 'application/json' }, // Set headers for JSON data
-            });
-
-            if (response.status === 200) {
-                // Handle successful response (e.g., display a success message)
-                console.log('Data sent successfully! Response:', response.data);
-                // Optionally handle returned data from the backend here
-            } else {
-                // Handle unexpected response status
-                console.error('Unexpected response status:', response.status);
+        function isAllNumericExceptState(formData) {
+            // Loop through each key-value pair in formData
+            for (const key in formData) {
+                // Skip the "state" key
+                if (key === "state") continue;
+                // Check if the current value is not a number (including NaN)
+                if (isNaN(formData[key])) {
+                    return false;
+                }
             }
-        } catch (error) {
-            // Handle errors during submission (e.g., network issues)
-            console.error('Error sending data:', error);
+            // If all values except "state" are numeric, return true
+            return true;
         }
+        const allNumericExceptState = isAllNumericExceptState(formData);
+
+        if (allNumericExceptState) {
+            console.log("All values except 'state' are numeric.");
+            setModel_output(null)
+            setLoading(true)
+            try {
+                const response = await axios.post(`${backend_url}/get_data`, formData, {
+                    headers: { 'Content-Type': 'application/json' }, // Set headers for JSON data
+                });
+                if (response.status === 200) {
+                    // Handle successful response (e.g., display a success message)
+                    console.log('Data sent successfully! Response:', response.data);
+                    setModel_output(response.data.Message)
+                } else {
+                    // Handle unexpected response status
+                    console.error('Unexpected response status:', response.status);
+                }
+            } catch (error) {
+                // Handle errors during submission (e.g., network issues)
+                console.error('Error sending data:', error);
+            }
+            setLoading(false)
+        } else {
+            console.log("Some values are not numeric.");
+            alert("Make sure you enter numeric values ")
+        }
+
     };
     return (
         <div>
             {/* Page Header */}
+            {loading && (
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={true}
+                >
+                    <CircularProgress color="inherit" />
+                </Backdrop>
+            )}
             <header className="masthead" style={{ backgroundImage: "url('static/assets/img/wine.jpg')" }}>
                 <div className="container position-relative px-4 px-lg-5">
                     <div className="row gx-4 gx-lg-5 justify-content-center">
@@ -159,8 +195,9 @@ const Hero = () => {
                                 </div>
                             </div>
                             <div className="form-row-last">
-                                <input type="submit" name="register" className="register" value="Predict" />
+                                <button type="submit" name="register" className="register">Predict</button>
                             </div>
+                            <p>{model_output}</p>
                         </form>
                     </div>
                 </div>

@@ -1,28 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import './Home.css'
 import { useNavigate } from 'react-router-dom';
 const Home = () => {
     const navigate = useNavigate()
-    // const modalRef = useRef(null);
-    // // Function to show the modal after 2 seconds
-    // function showModal() {
-    //     setTimeout(() => {
-    //         modalRef.current.classList.remove('hidden');
-    //     }, 2000); // Adjust the time in milliseconds (2000ms = 2 seconds)
-    // }
-
-    // // Call the showModal function on page load
-    // window.addEventListener('load', showModal);
-    // useEffect(() => {
-    //     window.addEventListener('load', showModal);
-    //     return () => {
-    //       window.removeEventListener('load', showModal);
-    //     };
-    //   }, []);
-      
-    // const hideCookiesSection = ()=>{
-    //     modalRef.current.classList.add('hidden')
-    // }
     const handleViewMoreclick=()=>{
         navigate('/hero')
     }

@@ -195,7 +195,25 @@ input:-moz-placeholder { /* Firefox 18- */
     color: #e5e5e5;
     font-size: 16px;
 }
-
+.register::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+	color: #e5e5e5; /* Light gray for placeholder text */
+	font-size: 16px;
+  }
+  
+  .register::-moz-placeholder { /* Firefox 19+ */
+	color: #e5e5e5;
+	font-size: 16px;
+  }
+  
+  .register:-ms-input-placeholder { /* IE 10+ */
+	color: #e5e5e5;
+	font-size: 16px;
+  }
+  
+  .register:-moz-placeholder { /* Firefox 18- */
+	color: #e5e5e5;
+	font-size: 16px;
+  }
 
 /* Responsive */
 @media screen and (max-width: 1199px) {
