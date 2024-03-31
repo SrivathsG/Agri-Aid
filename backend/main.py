@@ -1,7 +1,15 @@
 import pickle
 import pandas as pd
+import pathlib
+import textwrap
+import google.generativeai as genai
+
+from IPython.display import display
+from IPython.display import Markdown
 # model=pickle.load(open('RNDFRST.pkl','rb'))
+
 model=pickle.load(open('./RNDFRST.pkl','rb'))
+
 class Predict:
     def __init__(self) :
         self.model=pickle.load(open('RNDFRST.pkl','rb'))
@@ -38,7 +46,37 @@ class Predict:
     
     def predict(self,x):
         resp=self.model.predict(x)
-        return resp[0]
+        prob=self.model.predict_proba(x)
+        probab=prob[0]
+        indices=probab.argsort()[::-1][:1]
+
+        percentage=probab[indices[0]]
+
+        return resp[0],percentage
+    
+
+class Guide:
+    
+    def __init__(self):
+        genai.configure(api_key='AIzaSyAz3pBfQPp0ZHecfxJRDsSrjo33nfE2O20')
+        self.model2=genai.GenerativeModel('gemini-1.0-pro-latest')
+
+    def to_markdown(self,text):
+        self.text = text.replace('•', '  *')
+        return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
+    
+    
+    def intruct(self,crop):
+        prompt=f"can u give me very clear-cut guidelines on how to grow {crop} most cost-effectively? Make sure guidelines are detailed and enough for any farmer to follow along without any doubts. Make sure the guidelines you provide are for the Indian climate and in accordance with Indian practice. Do not give me any sort of background. Directly start-off by how to grow. let every step be detailed and in every step also highlight what problems a farmer may come across and provide the steps for that as well. Use simple english"
+    
+        response=self.model2.generate_content(prompt)
+    
+        text= self.to_markdown(response.text)
+
+        return text
+    
+    
+
         
 
 

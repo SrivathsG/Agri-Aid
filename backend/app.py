@@ -40,10 +40,10 @@ def get_data():
         }
         obj = main.Predict()
         test_df = obj.transform(form_data)
-        pred1 = obj.predict(test_df)
+        pred1,percentage = obj.predict(test_df)
         res = {
             "Success": True,
-            "Message" : f'{pred1} is the most suitable crop for growing according to soil conditions.'
+            "Message" : f'{pred1} is the most suitable crop for growing in your soil with {percentage}% compatibility.'
         }
         time.sleep(0.5)
         return jsonify(res)
