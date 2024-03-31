@@ -39,6 +39,7 @@ class Predict:
     def predict(self,x):
         resp=self.model.predict(x)
         return resp[0]
+        
 
 
 
