@@ -3,9 +3,12 @@ import pandas as pd
 import pathlib
 import textwrap
 import google.generativeai as genai
+import shap
 
 from IPython.display import display
 from IPython.display import Markdown
+from sklearn.inspection import plot_partial_dependence
+
 # model=pickle.load(open('RNDFRST.pkl','rb'))
 
 model=pickle.load(open('./RNDFRST.pkl','rb'))
@@ -52,7 +55,7 @@ class Predict:
 
         percentage=probab[indices[0]]
 
-        return resp[0],percentage
+        return resp[0],percentage*100
     
 
 class Guide:
@@ -74,6 +77,65 @@ class Guide:
         text= self.to_markdown(response.text)
 
         return text
+
+    
+class Explain:    
+
+    def __init__(self):
+        shap.initjs()
+
+    def shap(self, model,x):  #this function will return a string of explaination (x is the encoded df of user input)
+        self.model=model
+
+        #For finding the index of the predicted class
+
+        pred=self.model.predict(x)
+        k=0                         
+        for c in self.model.classes_:
+            if(c==pred[0]):
+                index=k
+        
+        #Finding the most contributed features 
+                
+        explainer=shap.Explainer(self.model)
+
+        shap_values=explainer(x)
+
+        indices=shap_values.argsort()[0,:,index,-1][:4]
+
+
+        features=[]
+        contri=[]
+        k=0
+        for i in indices:
+            features[k]=x.columns.to_list()[i]
+            contri[k]=shap_values[0,i,index]
+            k=k=1
+
+        prob=self.model.predict_proba(x)
+        probab=prob[0]
+        indices=probab.argsort()[::-1][:1]
+
+        percentage=probab[indices[0]]
+
+        if(percentage<0.4):
+            return f"Our analysis indicates that the provided soil conditions may not exhibit optimal compatibility with any crops. To enhance compatibility and promote successful plant growth, we recommend conditioning the soil before planting.  For detailed suggestions and additional resources, please visit our queries section"
+        
+        else:
+            return f"The features of soil that strongly promote you to grow {pred[0]} are: {features[0]}: {contri[0]}, {features[1]}: {contri[1]}, {features[2]}: {contri[2]}, {features[3]}: {contri[3]}. These values each represent how close your soil conditions are compared to the optimal levels needed to grow {pred[0]} with a healthy yield "
+
+        #Make an automation script to retrieve the pdp and save them with corresponding names of predictions.
+     
+        
+
+            
+
+
+
+    
+
+    
+        
     
     
 
