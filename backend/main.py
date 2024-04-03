@@ -65,11 +65,27 @@ class Guide:
         self.model2=genai.GenerativeModel('gemini-1.0-pro-latest')
 
     def to_markdown(self,text):
+        """
+        This function converts the response to markdown
+
+        Args:
+            text: text response from GenAI model
+
+        returns: Markdown text.
+        """
         self.text = text.replace('•', '  *')
         return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
     
     
     def intruct(self,crop):
+        """
+        This function returns the guide for crop
+
+        Args:
+            crop: Predicted crop from the model
+
+        returns: returns the final response that can be directly used
+        """
         prompt=f"can u give me very clear-cut guidelines on how to grow {crop} most cost-effectively? Make sure guidelines are detailed and enough for any farmer to follow along without any doubts. Make sure the guidelines you provide are for the Indian climate and in accordance with Indian practice. Do not give me any sort of background. Directly start-off by how to grow. let every step be detailed and in every step also highlight what problems a farmer may come across and provide the steps for that as well. Use simple english"
     
         response=self.model2.generate_content(prompt)
@@ -83,8 +99,17 @@ class Explain:
 
     def __init__(self):
         shap.initjs()
+        self.model=pickle.load(open('RNDFRST.pkl','rb'))
 
-    def shap(self, model,x):  #this function will return a string of explaination (x is the encoded df of user input)
+    def shap(self,x):
+        """
+        This function provides analysis or explaination on the prediction
+        Args:
+            Dataframe: Single record of user input in pandas format.
+        returns:
+            A string of explaination
+        """
+          #this function will return a string of explaination (x is the encoded df of user input)
         self.model=model
 
         #For finding the index of the predicted class
