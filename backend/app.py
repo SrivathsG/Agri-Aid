@@ -39,13 +39,20 @@ def get_data():
             # Add other relevant data based on your processing
         }
         obj = main.Predict()
+        guide = main.Guide()
+        explain = main.Explain()
         test_df = obj.transform(form_data)
         pred1,percentage = obj.predict(test_df)
+        instruction =guide.intruct(pred1)
+        explaination = explain.shap(test_df)
         res = {
             "Success": True,
-            "Message" : f'{pred1} is the most suitable crop for growing in your soil with {percentage}% compatibility.'
+            "Crop": pred1,
+            "Message" : f'{pred1} is the most suitable crop for growing in your soil with {percentage}% compatibility.',
+            "Explanation" : explaination,
+            "Instruction": instruction
         }
-        time.sleep(0.5)
+        # time.sleep(0.5)
         return jsonify(res)
         # return jsonify(response_data)  # Return JSON response
     else:

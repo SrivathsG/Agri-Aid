@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
-// import './static/css/styles.css'
-// import './static/css2/style.css'
-// import './static/css2/nunito-font.css'
 import axios from 'axios'
 import "./Hero.css"
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import {useNavigate} from 'react-router-dom'
 const Hero = () => {
     const backend_url = import.meta.env.VITE_BACKEND_URL
     const initialformdata = {
@@ -18,6 +16,7 @@ const Hero = () => {
         rainfall: "",
         state: "State"
     }
+    const navigate = useNavigate()
     const [formData, setFormData] = useState(initialformdata)
     const [loading, setLoading] = useState(false)
     const [model_output, setModel_output] = useState(null)
@@ -51,6 +50,14 @@ const Hero = () => {
                     // Handle successful response (e.g., display a success message)
                     console.log('Data sent successfully! Response:', response.data);
                     setModel_output(response.data.Message)
+                    const props ={
+                        crop : response.data.Crop,
+                        prediction:response.data.Message,
+                        explanation : response.data.Explanation,
+                        instruction : response.data.Instruction
+                    }
+                    navigate('/result',{state:props})
+
                 } else {
                     // Handle unexpected response status
                     console.error('Unexpected response status:', response.status);
@@ -60,10 +67,13 @@ const Hero = () => {
                 console.error('Error sending data:', error);
             }
             setLoading(false)
+
+
         } else {
             console.log("Some values are not numeric.");
             alert("Make sure you enter numeric values ")
         }
+        
 
     };
     return (

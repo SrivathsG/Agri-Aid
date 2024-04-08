@@ -86,13 +86,14 @@ class Guide:
 
         returns: returns the final response that can be directly used
         """
-        prompt=f"can u give me very clear-cut guidelines on how to grow {crop} most cost-effectively? Make sure guidelines are detailed and enough for any farmer to follow along without any doubts. Make sure the guidelines you provide are for the Indian climate and in accordance with Indian practice. Do not give me any sort of background. Directly start-off by how to grow. let every step be detailed and in every step also highlight what problems a farmer may come across and provide the steps for that as well. Use simple english"
+        prompt=f"can u give me very clear-cut guidelines on how to grow {crop} most cost-effectively? Make sure guidelines are detailed and enough for any farmer to follow along without any doubts. Make sure the guidelines you provide are for the Indian climate and in accordance with Indian practice. Do not give me any sort of background. Directly start-off by how to grow. let every step be detailed and in every step also highlight what problems a farmer may come across and how to solve it after discussing the steps. Use simple english"
     
         response=self.model2.generate_content(prompt)
     
         text= self.to_markdown(response.text)
 
-        return text
+        # return response
+        return response.text
 
     
 class Explain:    
@@ -150,28 +151,7 @@ class Explain:
             return f"The features of soil that strongly promote you to grow {pred[0]} are: {features[0]}: {contri[0]}, {features[1]}: {contri[1]}, {features[2]}: {contri[2]}, {features[3]}: {contri[3]}. These values each represent how close your soil conditions are compared to the optimal levels needed to grow {pred[0]} with a healthy yield "
 
         #Make an automation script to retrieve the pdp and save them with corresponding names of predictions.
-     
-        
 
-            
-
-
-
-    
-
-    
-        
-    
-    
-
-        
-
-
-
-
-
-        
-        
 
         
         

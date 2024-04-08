@@ -1,4 +1,21 @@
-import pandas as pd 
-data=pd.read_csv('./Datasets/Updated_data.csv')
-print (data.head())
-print (data.CROP.unique())
+import pandas as pd
+import main
+form_data = {
+    'humidity': "1",
+    'nitrogen_level': "1",
+    'ph': "1",
+    'phosphorus_level': "1",
+    'potassium_level': "1",
+    'rainfall': "1",
+    'state': "Assam",
+    'temperature': "1"
+}
+obj = main.Predict()
+guide = main.Guide()
+explain = main.Explain()
+test_df = obj.transform(form_data)
+pred1,percentage = obj.predict(test_df)
+print ( pred1)
+print()
+# print (guide.intruct(pred1))
+print (explain.shap(test_df))

@@ -3,3 +3,5 @@ pandas
 seaborn 
 flask
 FLASK_CORS
+shap
+google-generativeai
