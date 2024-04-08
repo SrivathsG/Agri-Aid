@@ -44,7 +44,7 @@ def get_data():
         test_df = obj.transform(form_data)
         pred1,percentage = obj.predict(test_df)
         instruction =guide.intruct(pred1)
-        explaination = explain.shap(test_df)
+        explaination = explain.contribution(test_df)
         res = {
             "Success": True,
             "Crop": pred1,

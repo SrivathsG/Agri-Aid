@@ -11,11 +11,11 @@ from sklearn.inspection import plot_partial_dependence
 
 # model=pickle.load(open('RNDFRST.pkl','rb'))
 
-model=pickle.load(open('./RNDFRST.pkl','rb'))
+model=pickle.load(open('backend\RNDFRST.pkl','rb'))
 
 class Predict:
     def __init__(self) :
-        self.model=pickle.load(open('RNDFRST.pkl','rb'))
+        self.model=pickle.load(open('backend\RNDFRST.pkl','rb'))
     
 
     def transform(self,x):
@@ -69,7 +69,7 @@ class Guide:
         This function converts the response to markdown
 
         Args:
-            text: text response from GenAI model
+            Text: text response from GenAI model
 
         returns: Markdown text.
         """
@@ -100,9 +100,9 @@ class Explain:
 
     def __init__(self):
         shap.initjs()
-        self.model=pickle.load(open('RNDFRST.pkl','rb'))
+        self.model=pickle.load(open('backend\RNDFRST.pkl','rb'))
 
-    def shap(self,x):
+    def contribution(self,x):
         """
         This function provides analysis or explaination on the prediction
         Args:
@@ -120,6 +120,7 @@ class Explain:
         for c in self.model.classes_:
             if(c==pred[0]):
                 index=k
+            k=k+1
         
         #Finding the most contributed features 
                 
@@ -127,16 +128,18 @@ class Explain:
 
         shap_values=explainer(x)
 
-        indices=shap_values.argsort()[0,:,index,-1][:4]
+        indices=shap_values.values[0,:,index].argsort()[::-1][:4]
 
 
-        features=[]
-        contri=[]
+        features=[" "," "," "," "]
+        contri=[0,0,0,0]
         k=0
         for i in indices:
             features[k]=x.columns.to_list()[i]
-            contri[k]=shap_values[0,i,index]
-            k=k=1
+            val=shap_values.values[0,i,index]
+            val_rounded=round(val,2)
+            contri[k]=val_rounded
+            k=k+1
 
         prob=self.model.predict_proba(x)
         probab=prob[0]
@@ -148,7 +151,7 @@ class Explain:
             return f"Our analysis indicates that the provided soil conditions may not exhibit optimal compatibility with any crops. To enhance compatibility and promote successful plant growth, we recommend conditioning the soil before planting.  For detailed suggestions and additional resources, please visit our queries section"
         
         else:
-            return f"The features of soil that strongly promote you to grow {pred[0]} are: {features[0]}: {contri[0]}, {features[1]}: {contri[1]}, {features[2]}: {contri[2]}, {features[3]}: {contri[3]}. These values each represent how close your soil conditions are compared to the optimal levels needed to grow {pred[0]} with a healthy yield "
+            return f"The features of soil that strongly promote you to grow {pred[0]} are: {features[0]}: {contri[0]}, {features[1]}: {contri[1]}, {features[2]}: {contri[2]}, {features[3]}: {contri[3]}. These values each represent how close your soil conditions are compared to the optimal levels needed to grow {pred[0]} with a healthy yield. It's important to understand that the values aren't the direct representation, as the threshold for each differs. For more information click on view more..."
 
         #Make an automation script to retrieve the pdp and save them with corresponding names of predictions.
 
