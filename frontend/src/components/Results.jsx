@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Markdown from 'react-markdown';
-import '../Navbar.css';
+import './Results.css';
 
 const Results = () => {
     const location = useLocation();
