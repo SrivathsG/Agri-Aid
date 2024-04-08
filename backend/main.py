@@ -11,11 +11,11 @@ from sklearn.inspection import plot_partial_dependence
 
 # model=pickle.load(open('RNDFRST.pkl','rb'))
 
-model=pickle.load(open('backend\RNDFRST.pkl','rb'))
+model=pickle.load(open('./RNDFRST.pkl','rb'))
 
 class Predict:
     def __init__(self) :
-        self.model=pickle.load(open('backend\RNDFRST.pkl','rb'))
+        self.model=model
     
 
     def transform(self,x):
@@ -100,7 +100,7 @@ class Explain:
 
     def __init__(self):
         shap.initjs()
-        self.model=pickle.load(open('backend\RNDFRST.pkl','rb'))
+        self.model=model
 
     def contribution(self,x):
         """

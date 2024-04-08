@@ -16,10 +16,10 @@ const Results = () => {
     }
 
     return (
-        <div className='font-roboto text-2xl flex flex-col min-h-screen'> {/* Full viewport height */}
+        <div className='font-roboto text-2xl flex flex-col min-h-screen text-left'> {/* Full viewport height */}
             <div className='container-full flex flex-col justify-start'> {/* Left-aligned content */}
-                <div className='w-full'>
-                    <h1 className='mt-4 mb-4'>{prediction}</h1>
+                <div className='w-full' >
+                    <h1 className='mt-4 mb-4' >{prediction}</h1>
                     <p className='mb-4'>{explanation}</p>
 
                 </div>
@@ -33,13 +33,13 @@ const Results = () => {
                         < img
               src={`/${crop}_plt.png`} // Replace with your image path
                     alt="View More Details"
-                    className="w-full h-auto object-cover" // Adjust image styles as needed
+                    className="w-3/4 h-auto object-cover" // Adjust image styles as needed
             />
           )}
                 </div>
-                <div className='w-full'>
+                <div className='w-full mb-5 '>
                     <Markdown
-                        className='container bg-gray-300 pt-4 overflow-y-scroll max-h-96'
+                        className='container bg-gray-200 pt-4 pb-4 overflow-y-scroll max-h-96 rounded-lg border-2 border-green-700 styled-scrollbar'
                     >
                         {instruction}
                     </Markdown>
