@@ -7,7 +7,7 @@ import Login from './components/Login';
 import Aboutus from './components/Aboutus';
 import Footer from './components/Footer';
 import Hero from './components/hero/Hero';
-import Results from './components/hero/Results';
+import Results from './components/Results';
 const App = () => {
   return (
     <BrowserRouter className='scroll-smooth'>
@@ -17,7 +17,7 @@ const App = () => {
         <Route path='/hero' element={<Hero />} />
         <Route path='/login' element={<Login />} />
         <Route path='/aboutus' element={<Aboutus />} />
-        <Route path='/result' element={<Results />} />
+        <Route path='/result' element={<Results/>} />
       </Routes>
       {/* <Footer /> */}
     </BrowserRouter>
