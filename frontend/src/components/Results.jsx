@@ -19,7 +19,8 @@ const Results = () => {
         <div className='font-roboto text-2xl flex flex-col min-h-screen text-left'> {/* Full viewport height */}
             <div className='container-full flex flex-col justify-start'> {/* Left-aligned content */}
                 <div className='w-full' >
-                    <h1 className='mt-4 mb-4' >{prediction}</h1>
+                    <h1 className='mt-4 mb-4'><span className='text-4xl font-bold'>{crop}</span>{prediction}</h1>
+                    {/* <h1 className='mt-4 mb-4 text-4xl font-bold' ><span className='text-2xl font-normal'>Hello </span>{prediction}</h1> */}
                     <p className='mb-4'>{explanation}</p>
 
                 </div>

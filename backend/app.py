@@ -48,7 +48,7 @@ def get_data():
         res = {
             "Success": True,
             "Crop": pred1,
-            "Message" : f'{pred1} is the most suitable crop for growing in your soil with {percentage}% compatibility.',
+            "Message" : f' is the most suitable crop for growing in your soil with {percentage}% compatibility.',
             "Explanation" : explaination,
             "Instruction": instruction
         }
