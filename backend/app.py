@@ -6,8 +6,7 @@ import main
 
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5173"])  # Allow requests from your React frontend origin
-
+CORS(app, origins=["http://127.0.0.1:5173","http://localhost:5173"])  # Allow requests from your React frontend origin
 @app.route('/')
 def hello():
     return {"Message": "This is the backend server to AgroUs"}
