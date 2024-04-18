@@ -1,0 +1,7 @@
+scikit-learn==1.1.2
+pandas 
+seaborn 
+flask
+FLASK_CORS
+shap
+google-generativeai
